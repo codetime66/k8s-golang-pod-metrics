@@ -106,28 +106,29 @@ func main() {
         panic(err.Error())
     }
 
-    for _, m := range pods.Items {
+    go func() {
+       for _, m := range pods.Items {
 
-       for _, c := range m.Containers {
+          for _, c := range m.Containers {
 
-          s_mem_in_kb := strings.TrimSuffix(c.Usage.Memory, "Ki")
-	  s_cpu_in_n := strings.TrimSuffix(c.Usage.CPU, "n")
+             s_mem_in_kb := strings.TrimSuffix(c.Usage.Memory, "Ki")
+	     s_cpu_in_n := strings.TrimSuffix(c.Usage.CPU, "n")
 
-          n_mem_in_kb, err := strconv.ParseFloat(s_mem_in_kb, 64)
-          if err != nil {
-             n_mem_in_kb=0
+             n_mem_in_kb, err := strconv.ParseFloat(s_mem_in_kb, 64)
+             if err != nil {
+                n_mem_in_kb=0
+             }
+
+             n_cpu_in_n, err := strconv.ParseFloat(s_cpu_in_n, 64)
+             if err != nil {
+                n_cpu_in_n=0
+             }
+
+             memUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "Ki").Add(n_mem_in_kb)
+	     cpuUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "n").Add(n_cpu_in_n)
           }
-
-          n_cpu_in_n, err := strconv.ParseFloat(s_cpu_in_n, 64)
-          if err != nil {
-             n_cpu_in_n=0
-          }
-
-          //fmt.Println(m.Metadata.Name, m.Metadata.Namespace, m.Timestamp.String(), m.Containers, s_mem_in_kb, n_mem_in_kb)
-          memUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "Ki").Add(n_mem_in_kb)
-	  cpuUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "n").Add(n_cpu_in_n)
        }
-    }
+    }()
 
     fmt.Print("Server listening to ")
     fmt.Print(*addr)
