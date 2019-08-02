@@ -1,4 +1,4 @@
-module github.com/codetime66/k8s/metrics01
+module github.com/codetime66/k8s-golang-pod-metrics
 
 go 1.13
 
