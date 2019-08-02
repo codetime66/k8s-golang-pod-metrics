@@ -12,3 +12,6 @@ Usage of ./bin/k8s-prom-pods:
 
 
 ./bin/k8s-prom-pods --kubeconfig ~/projects/kubeland/zubernetes/.kube/conf
+
+---------
+kubectl --kubeconfig ~/projects/kubeland/hzubernetes/.kube/conf -n infra exec -it mytool-fdf57d5bb-hzb7p -- curl -v -k https://kubernetes.default.svc:443/apis/metrics.k8s.io/v1beta1/pods
