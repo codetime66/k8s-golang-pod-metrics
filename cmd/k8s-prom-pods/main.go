@@ -88,6 +88,8 @@ func main() {
 		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
     }
     var addr = flag.String("listen-address", ":8080", "The address to listen on for HTTP requests.")
+    var interval = flag.String("api-get-interval", "15", "The interval for api requests.")
+
     flag.Parse()
 
     // use the current context in kubeconfig
@@ -100,13 +102,19 @@ func main() {
     if err != nil {
         panic(err.Error())
     }
-    var pods PodMetricsList
-    err = getMetrics(clientset, &pods)
-    if err != nil {
-        panic(err.Error())
-    }
 
     go func() {
+
+     for {
+
+       fmt.Printf("Performing an api http request - Current Unix Time: %v\n", time.Now().Unix())
+
+       var pods PodMetricsList
+       err = getMetrics(clientset, &pods)
+       if err != nil {
+          panic(err.Error())
+       }
+
        for _, m := range pods.Items {
 
           for _, c := range m.Containers {
@@ -128,6 +136,15 @@ func main() {
 	     cpuUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "n").Add(n_cpu_in_n)
           }
        }
+
+       n_interval, err := strconv.Atoi(*interval)
+       if err != nil {
+           n_interval=15
+       }
+       time.Sleep( time.Duration(n_interval) * time.Second)
+
+     }
+
     }()
 
     fmt.Print("Server listening to ")
