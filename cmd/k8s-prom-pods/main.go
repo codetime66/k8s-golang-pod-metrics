@@ -5,7 +5,7 @@ import (
     "path/filepath"
     "os"
 
-    "github.com/codetime66/k8s-golang-pod-metrics/pkg/cmd"
+    "github.com/codetime66/k8s-golang-pod-metrics/pkg/promhttp"
 )
 
 func main() {
@@ -20,7 +20,7 @@ func main() {
 
     flag.Parse()
 
-    cmd.StartUp(*kubeconfig, *addr, *interval)
+    promhttp.StartUp(*kubeconfig, *addr, *interval)
 }
 
 func homeDir() string {

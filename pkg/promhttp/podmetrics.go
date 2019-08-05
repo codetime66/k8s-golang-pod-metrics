@@ -1,4 +1,4 @@
-package cmd
+package promhttp
 
 import (
     "k8s.io/client-go/tools/clientcmd"
