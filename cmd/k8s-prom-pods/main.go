@@ -132,8 +132,8 @@ func main() {
                 n_cpu_in_n=0
              }
 
-             memUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "Ki").Add(n_mem_in_kb)
-	     cpuUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "n").Add(n_cpu_in_n)
+             memUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "Ki").Set(n_mem_in_kb)
+	     cpuUsage.WithLabelValues(m.Metadata.Namespace, m.Metadata.Name, c.Name, "n").Set(n_cpu_in_n)
           }
        }
 
