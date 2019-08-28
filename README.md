@@ -20,3 +20,5 @@ kubectl --kubeconfig ~/projects/kubeland/hzubernetes/.kube/conf -n infra exec -i
 #k8s api/v1
 kubectl --kubeconfig ~/projects/kubeland/hzubernetes/.kube/conf -n infra exec mytool-648f5658b8-4m5b4 -- curl -v -k https://kubernetes.default.svc:443/api/v1/
 kubectl --kubeconfig ~/projects/kubeland/hzubernetes/.kube/conf -n infra exec mytool-648f5658b8-4m5b4 -- curl -v -k https://kubernetes.default.svc:443/api/v1/endpoints
+
+kubectl exec mytool-6989477677-pvns8 -- curl -v -k https://kubernetes.default.svc:443/api/v1/namespaces/k8s-prometheus-micrometer-demo/endpoint/app-lb
